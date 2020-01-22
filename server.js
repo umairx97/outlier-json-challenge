@@ -8,11 +8,12 @@ const PORT = process.env.PORT || 1337
 
 const app = express()
 
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/health', api.getHealth)
 app.put("/:studentId/*", api.putStudentData)
-app.get(["/:studentId", "/:studentId/*" ], api.getStudentData)
+app.get(["/:studentId", "/:studentId/*"], api.getStudentData)
 app.delete("/:studentId/*", api.deleteStudentData)
 
 app.use(middleware.handleError)
