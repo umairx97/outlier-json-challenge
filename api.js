@@ -37,7 +37,10 @@ async function getHealth(req, res, next) {
 function decodeParameters(req) {
   const studentId = req.params.studentId.replace(/[\\/:*?"<>|]/g, '_')
   const prop = req.params[0] ? req.params[0].replace(/\//g, '.') : ''
-  const value = req.body
+  console.log(studentId, prop, req.body)
+  const value = req.headers['content-type'] === 'application/x-www-form-urlencoded'
+    ? JSON.parse(Object.keys(req.body)[0])
+    : req.body
   return { studentId, prop, value }
 }
 

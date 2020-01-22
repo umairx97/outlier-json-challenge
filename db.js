@@ -29,22 +29,22 @@ function checkFileExistence(studentId) {
 
 function closeFile(studentId) {
     const filePath = getDbPath(studentId);
-    if (fs.existsSync(filePath)) {
+    if (checkFileExistence(studentId)) {
         fs.unlinkSync(filePath)
     }
 }
 
 function putStudent(studentId, prop, value) {
     const filePath = getDbPath(studentId)
-    let data = fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, { encoding: 'utf8' })) : {}
+    let data = checkFileExistence(studentId) ? JSON.parse(fs.readFileSync(filePath, { encoding: 'utf8' })) : {}
     data = _.set(data, prop, value)
-    console.log(data)
+    console.log(value)
     fs.writeFileSync(filePath, JSON.stringify(data), { encoding: 'utf8' })
 }
 
 function getStudent(studentId, property) {
     const filePath = getDbPath(studentId);
-    if (!fs.existsSync(filePath)) return null
+    if (!checkFileExistence(studentId)) return null
     const data = JSON.parse(fs.readFileSync(filePath, { encoding: "utf8" }))
     return property.length > 0 ? _.get(data, property) : data
 }
@@ -52,7 +52,7 @@ function getStudent(studentId, property) {
 
 function deleteStudent(studentId, property) {
     const filePath = getDbPath(studentId)
-    if (!fs.existsSync(filePath)) return false
+    if (!checkFileExistence(studentId)) return false
 
     const data = JSON.parse(fs.readFileSync(filePath, { encoding: 'utf8' }))
     const value = _.get(data, property)
